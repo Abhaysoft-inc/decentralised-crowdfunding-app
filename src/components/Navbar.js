@@ -1,11 +1,20 @@
+"use client"
+import { useRouter } from 'next/navigation'
 import React from 'react'
 
+
+
 const Navbar = () => {
+
+    const router = useRouter()
+    function goToHome() {
+        router.push('/')
+    }
     return (
         <>
 
             <div className="navbar h-20 w-full shadow rounded-full bg-white flex justify-between items-center px-10">
-                <p className="title text-xl sansation-regular">DeCrowFund</p>
+                <p className="title text-xl sansation-regular cursor-pointer" onClick={goToHome}>DeCrowFund</p>
                 <ul className="menu flex gap-4 text-md items-center">
                     <li className='cursor-pointer hover:text-blue-950 hover:ease-in-out'>Contribute</li>
                     <li className='cursor-pointer hover:text-blue-950 hover:ease-in-out'>About</li>

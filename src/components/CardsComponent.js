@@ -1,9 +1,16 @@
+"use client"
+import { useRouter } from 'next/navigation'
 import React from 'react'
 
 const CardsComponent = ({ image }) => {
+    const router = useRouter()
+    function viewCamapaign() {
+        router.push('/campaign/abc-def')
+    }
+
     return (
         <div>
-            <div className="bg-gray-100 h-[440px] rounded shadow-lg shadow-black px-2 py-2">
+            <div className="bg-gray-100 h-fit rounded shadow-lg shadow-black px-2 py-2">
                 <img src={image} className='h-52 w-full object-cover' alt="" />
 
                 <p className="title mt-2 text-xl font-bold sansation-regular mx-1 ">Money for education for poors</p>
@@ -21,7 +28,7 @@ const CardsComponent = ({ image }) => {
 
                 </div>
 
-                <button className="w-full mt-6 bg-blue-500 text-white rounded py-2 cursor-pointer">
+                <button className="w-full mt-6 bg-blue-500 text-white rounded py-2 cursor-pointer" onClick={viewCamapaign}>
                     Contribute
                 </button>
 
