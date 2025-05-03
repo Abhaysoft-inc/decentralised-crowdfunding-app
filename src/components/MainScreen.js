@@ -1,19 +1,65 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import CardsComponent from './CardsComponent'
+import axios from 'axios';
 
 const MainScreen = () => {
+    const [campaigns, setCampaigns] = useState([])
+    const [loading, setLoading] = useState(true)
+
+    async function getCampaigns() {
+        try {
+            setLoading(true)
+            const response = await axios({
+                method: "get",
+                url: "https://fra.cloud.appwrite.io/v1/databases/68166aa50016fc88f31e/collections/68166b3200261be321e5/documents",
+                headers: {
+                    "X-Appwrite-Project": process.env.NEXT_PUBLIC_PROJECT_ID,
+                    "Content-Type": "application/json",
+                    "X-Appwrite-Key": process.env.NEXT_PUBLIC_API_APPWRITE,
+                },
+            });
+
+            // Sort campaigns by $createdAt in descending order (newest first)
+            const sortedCampaigns = response.data.documents.sort((a, b) => {
+                return new Date(b.$createdAt) - new Date(a.$createdAt);
+            });
+
+            setCampaigns(sortedCampaigns);
+            console.log("Sorted campaigns:", sortedCampaigns);
+        } catch (e) {
+            console.log(e);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        getCampaigns();
+    }, [])
+
     return (
         <>
-
-            <div className="grid grid-cols-3 py-3 gap-3 mx-2 space-y-2.5">
-                <CardsComponent image={"https://images.unsplash.com/photo-1611270418597-a6c77f4b7271?q=80&w=1396&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"} />
-                <CardsComponent image={"https://plus.unsplash.com/premium_photo-1699562353506-374d31991522?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"} />
-                <CardsComponent image={"https://images.unsplash.com/photo-1743630459079-ff40cb544dc1?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"} />
-                <CardsComponent image={"https://images.unsplash.com/photo-1744375212850-cd9da4c1d24d?q=80&w=1528&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"} />
-
-
-
-            </div>
+            {loading ? (
+                <div className="flex justify-center items-center h-40">
+                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-pink-700"></div>
+                </div>
+            ) : campaigns.length === 0 ? (
+                <div className="text-center py-10 text-gray-500">No campaigns found</div>
+            ) : (
+                <div className="grid grid-cols-3 py-3 gap-3 mx-2">
+                    {campaigns.map((element, index) => (
+                        <CardsComponent
+                            key={element.$id}
+                            image={element.imageURL}
+                            campaignTitle={element.campaignName}
+                            campaignGoal={element.campaignGoal}
+                            // Pass additional props if needed
+                            createdAt={element.$createdAt}
+                            id={element.$id}
+                        />
+                    ))}
+                </div>
+            )}
         </>
     )
 }

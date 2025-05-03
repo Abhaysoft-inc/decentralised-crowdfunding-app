@@ -21,6 +21,7 @@ const CreateCampaignPage = () => {
     const [campaignName, setcampaignName] = useState("")
     const [campaignGoal, setcampaignGoal] = useState("")
     const [info, setinfo] = useState("");
+    const [Loading, setLoading] = useState(false)
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -28,6 +29,7 @@ const CreateCampaignPage = () => {
 
 
         try {
+            setLoading(true)
             const uniqueId = 'campaign_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
 
 
@@ -89,6 +91,7 @@ const CreateCampaignPage = () => {
             });
 
             console.log(appwriteResponse);
+            setLoading(false)
             alert("Campaign Creation Successfull!");
             router.push('/');
 
@@ -139,7 +142,10 @@ const CreateCampaignPage = () => {
                             <input type="file" name="file" id="" className='mt-3 bg-gray-100 w-full px-10 py-2 rounded cursor-pointer' onChange={(e) => { setFile(e.target.files[0]) }} />
 
                             <button className='text-center flex justify-center w-full mt-6 bg-blue-600 text-white py-2 rounded cursor-pointer' onClick={handleSubmit} >
-                                Create Campaign
+                                {
+                                    Loading ? "Creating Campaign...." : "Create Campaign"
+                                }
+
 
                             </button>
                         </div>
