@@ -1,3 +1,4 @@
+"use client"
 import MainScreen from "@/components/MainScreen";
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
