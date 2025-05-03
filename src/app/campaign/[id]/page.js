@@ -31,7 +31,7 @@ const CampaignPage = () => {
                     </p>
                     <img src="https://cimages.milaap.org/milaap/image/upload/c_fill,h_452,w_603/v1746010597/production/images/campaign/906807/liq0crkyzfm7jm2o6qx2_1746010599.jpg" alt="" className='mt-6 rounded w-full h-96 object-cover' />
 
-                    <div className="flex mt-6 justify-between ">
+                    <div className="flex mt-6 justify-between gap-2 ">
                         <button className="bg-green-600 py-2 px-10 rounded flex gap-3 items-center cursor-pointer text-white ">
                             Share on Whatsapp
                             <IoLogoWhatsapp color='white' size={30} />
