@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8;
 
+// contract address - 0x4Ba6aEAa4CAC4372542aE21E23F98571cD9BA8B4
+
 contract CrowdFunding {
     mapping(string => uint) balance; // saves balances using names
 
