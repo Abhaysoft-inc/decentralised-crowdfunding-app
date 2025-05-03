@@ -1,5 +1,5 @@
 "use client"
-import React from 'react'
+import React, { useState } from 'react'
 import { IoLogoFacebook, IoLogoWhatsapp } from 'react-icons/io'
 import { FaXTwitter } from "react-icons/fa6";
 import Navbar from '@/components/Navbar';
@@ -7,17 +7,21 @@ import { BiSolidDonateHeart } from "react-icons/bi";
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { VscSparkleFilled } from "react-icons/vsc";
+import PopupDonateForm from '@/components/PopupDonateForm';
 
 
 const CampaignPage = () => {
     const value = 0.66;
+    const [isDonatePopupOpen, setIsDonatePopupOpen] = useState(false);
+
     return (
         <>
+            <PopupDonateForm isOpen={isDonatePopupOpen} onClose={() => setIsDonatePopupOpen(false)} />
             <div className="mx-10 mt-6 ">
                 <Navbar />
             </div>
 
-            <div className="flex gap-4 mx-10 mt-6 mb-12">
+            <div className="flex gap-4 mx-10 mt-6 mb-12 ">
 
 
                 <div className="details-section bg-white h-fit w-2/3 px-5 py-6 rounded">
@@ -127,7 +131,12 @@ const CampaignPage = () => {
 
 
                     </div>
-                    <button className="text-white bg-gradient-to-r from-pink-700 to-pink-800 rounded-full w-full mt-6 py-2 text-xl cursor-pointer">Donate Now!</button>
+                    <button
+                        onClick={() => setIsDonatePopupOpen(true)}
+                        className="text-white bg-gradient-to-r from-pink-700 to-pink-800 rounded-full w-full mt-6 py-2 text-xl cursor-pointer"
+                    >
+                        Donate Now!
+                    </button>
                     <p className="text-center text-sm mt-2">Sepolia ETH accepted only</p>
 
                     <div className="ai-summary mt-6">
