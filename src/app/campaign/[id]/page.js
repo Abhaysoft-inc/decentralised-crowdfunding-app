@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { IoLogoFacebook, IoLogoWhatsapp } from 'react-icons/io'
 import { FaXTwitter } from "react-icons/fa6";
 import Navbar from '@/components/Navbar';
@@ -8,28 +8,88 @@ import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { VscSparkleFilled } from "react-icons/vsc";
 import PopupDonateForm from '@/components/PopupDonateForm';
-
+import { useParams } from 'next/navigation';
+import axios from 'axios';
 
 const CampaignPage = () => {
+    const params = useParams();
+    const campaignId = params.id;
     const value = 0.66;
     const [isDonatePopupOpen, setIsDonatePopupOpen] = useState(false);
+    const [fetchedData, setfetchedData] = useState(null);
+    const [loading, setloading] = useState(true); // Set initial loading to true
+
+    async function fetchedCampaignDate() {
+        try {
+            setloading(true);
+
+            const response = await axios({
+                method: "get",
+                url: `https://fra.cloud.appwrite.io/v1/databases/68166aa50016fc88f31e/collections/68166b3200261be321e5/documents/${campaignId}`,
+                headers: {
+                    "X-Appwrite-Project": process.env.NEXT_PUBLIC_PROJECT_ID,
+                    "Content-Type": "application/json",
+                    "X-Appwrite-Key": process.env.NEXT_PUBLIC_API_APPWRITE,
+                },
+            });
+
+            console.log(response.data);
+            setfetchedData(response.data);
+        } catch (e) {
+            console.log(e);
+        } finally {
+            setloading(false);
+        }
+    }
+
+    useEffect(() => {
+        fetchedCampaignDate();
+    }, [campaignId]);
+
+    // Show loading state
+    if (loading) {
+        return (
+            <>
+                <div className="mx-10 mt-6">
+                    <Navbar />
+                </div>
+                <div className="flex justify-center items-center h-[60vh]">
+                    <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-pink-700"></div>
+                </div>
+            </>
+        );
+    }
+
+    // Show error state if data wasn't loaded
+    if (!fetchedData) {
+        return (
+            <>
+                <div className="mx-10 mt-6">
+                    <Navbar />
+                </div>
+                <div className="flex justify-center items-center h-[60vh]">
+                    <div className="bg-red-100 border border-red-400 text-red-700 px-8 py-6 rounded-lg">
+                        <h2 className="text-2xl font-bold mb-2">Campaign Not Found</h2>
+                        <p>We couldn't find the campaign you're looking for. It may have been removed or doesn't exist.</p>
+                    </div>
+                </div>
+            </>
+        );
+    }
 
     return (
         <>
             <PopupDonateForm isOpen={isDonatePopupOpen} onClose={() => setIsDonatePopupOpen(false)} />
-            <div className="mx-10 mt-6 ">
+            <div className="mx-10 mt-6">
                 <Navbar />
             </div>
 
-            <div className="flex gap-4 mx-10 mt-6 mb-12 ">
-
-
+            <div className="flex gap-4 mx-10 mt-6 mb-12">
                 <div className="details-section bg-white h-fit w-2/3 px-5 py-6 rounded">
-
                     <p className="title text-3xl font-semibold">
-                        Help Potta Prashanth Recover from a Life-Threatening Brain Hemorrhage
+                        {fetchedData.campaignName}
                     </p>
-                    <img src="https://cimages.milaap.org/milaap/image/upload/c_fill,h_452,w_603/v1746010597/production/images/campaign/906807/liq0crkyzfm7jm2o6qx2_1746010599.jpg" alt="" className='mt-6 rounded w-full h-96 object-cover' />
+                    <img src={fetchedData.imageURL} alt="" className='mt-6 rounded w-full h-96 object-cover' />
 
                     <div className="flex mt-6 justify-between gap-2 ">
                         <button className="bg-green-600 py-2 px-10 rounded flex gap-3 items-center cursor-pointer text-white ">
@@ -61,17 +121,7 @@ const CampaignPage = () => {
                         <hr className='mt-3' />
 
                         <p className="mt-6">
-                            Dear Friends, Well-Wishers, and Kind Supporters,
-                            <br /><br />
-
-                            We, the family of Mr. Potta Prashanth, are reaching out with a heartfelt appeal during one of the most challenging times of our lives. Prashanth, aged 34, is a contract engineer working at AMD and the sole breadwinner of our family. He is also a loving husband and father to our 2-year-old son.
-                            <br /><br />
-
-                            On 21 April 2024, our lives were upended when Prashanth suffered a sudden and severe brain hemorrhage—medically termed acute intracerebral hematoma, a form of stroke that causes bleeding within the brain tissue. He was rushed to the hospital and underwent an emergency brain surgery that saved his life. Since then, he has been in the Intensive Care Unit (ICU), where he is showing signs of gradual recovery.
-                            <br /><br />
-
-                            However, this is only the beginning of a long and difficult journey.
-                            Doctors have advised that in approximately three months, Prashanth will require a second major surgery to reconstruct and reinsert a section of his skull that was removed to relieve pressure during the initial operation. Beyond the surgeries, his rehabilitation will be extensive and prolonged—requiring critical care, physiotherapy, medications, and neuro-rehabilitation to help him regain movement, coordination, and independence.
+                            {fetchedData.moreInfo}
                         </p>
                     </div>
 
@@ -82,7 +132,9 @@ const CampaignPage = () => {
 
                         <div className="grid grid-cols-3 mt-6 mb-10 gap-6">
 
-                            <img src="https://www.recordrs.com/wp-content/uploads/2023/06/img-sample-consolidated-medical-record-summ.jpg" alt="" />
+                            <img src={
+                                fetchedData.imageURL
+                            } alt="" />
 
                             <img src="https://www.recordrs.com/wp-content/uploads/2023/06/img-sample-consolidated-medical-record-summ.jpg" alt="" />
 
@@ -123,7 +175,7 @@ const CampaignPage = () => {
                         <div className="">
                             <p className="">Raised</p>
                             <p className="text-lg font-semibold">
-                                <span className="text-pink-800 text-xl">ETH 28</span> of ETH 90
+                                <span className="text-pink-800 text-xl">ETH 28</span> of ETH {fetchedData.campaignGoal}
 
                             </p>
                         </div>
