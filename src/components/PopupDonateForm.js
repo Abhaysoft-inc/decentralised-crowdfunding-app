@@ -10,7 +10,8 @@ const PopupDonateForm = ({ isOpen = false, onClose = () => { } }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log('Donating', amount, 'ETH with message:', message);
-        // Add donation logic here
+
+
     }
 
     if (!isOpen) return null;
