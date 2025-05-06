@@ -27,6 +27,11 @@ contract CrowdFunding {
         });
 
         campaigns.push(newCampaign);
+
+        // ek event emit karenge jo ki batayega ki campaign create hua hai and use ham frontend me catch karenge
+
+        emit CampaignCreated(campaigns.length -1, _campaignName, msg.sender);
+        
     }
 
     function donate(uint _campaignIndex) public payable {

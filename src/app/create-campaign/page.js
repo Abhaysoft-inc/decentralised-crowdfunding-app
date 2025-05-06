@@ -12,8 +12,9 @@ import Router, { useRouter } from 'next/navigation';
 const CreateCampaignPage = () => {
     // console.log(abi)
     const router = useRouter();
-
-    const contractAddress = "0x4Ba6aEAa4CAC4372542aE21E23F98571cD9BA8B4";
+    // 0x7d2bDd9291475C2634cc4d16F316FA45F858986d
+    // 0x4Ba6aEAa4CAC4372542aE21E23F98571cD9BA8B4
+    const contractAddress = "0x7d2bDd9291475C2634cc4d16F316FA45F858986d";
     const appwrite_api_endpoint = "https://fra.cloud.appwrite.io/v1";
 
 
@@ -41,6 +42,23 @@ const CreateCampaignPage = () => {
             const contractInstance = new ethers.Contract(contractAddress, abi, signer);
             const newCampaign = await contractInstance.createCampaign(campaignName, campaignGoal);
             const confirmation = await newCampaign.wait();
+            let campaignIndex;
+
+            for (const log of confirmation.logs) {
+                try {
+                    const parsed = contractInstance.interface.parseLog(log);
+                    if (parsed.name === "CampaignCreated") {
+                        campaignIndex = parsed.args.campaignIndex.toString();
+                        break;
+                    }
+                } catch (err) {
+                    // Not a log from our contract - safe to ignore
+                }
+            }
+
+            console.log(campaignIndex, " this was your campaign index")
+
+
             console.log("Your campaign is successfully listed");
             console.log(newCampaign, confirmation);
 
@@ -83,6 +101,7 @@ const CreateCampaignPage = () => {
                         imageURL: imageURL,
                         walletAddress: signer.address,
                         txHash: confirmation.hash,
+                        campaignIndexOnChain: campaignIndex,
 
                     }
 
