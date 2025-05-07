@@ -101,7 +101,7 @@ const CreateCampaignPage = () => {
                         imageURL: imageURL,
                         walletAddress: signer.address,
                         txHash: confirmation.hash,
-                        campaignIndexOnChain: campaignIndex,
+                        campaignIndexOnChain: parseInt(campaignIndex),
 
                     }
 

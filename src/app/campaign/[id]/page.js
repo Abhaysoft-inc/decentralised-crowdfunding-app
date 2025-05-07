@@ -98,7 +98,7 @@ const CampaignPage = () => {
 
                         </button>
                         <button className="bg-blue-600 py-2 px-10 rounded flex gap-3 items-center text-white cursor-pointer">
-                            Share on Facebook
+                            Share on Facebookz
                             <IoLogoFacebook color='white' size={30} />
 
                         </button>
@@ -122,6 +122,8 @@ const CampaignPage = () => {
 
                         <p className="mt-6">
                             {fetchedData.moreInfo}
+                            {/* {fetchedData.campaignIndexOnChain} */}
+
                         </p>
                     </div>
 
