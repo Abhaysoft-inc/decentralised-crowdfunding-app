@@ -19,7 +19,7 @@ const MainScreen = () => {
                 },
             });
 
-            // Sort campaigns by $createdAt in descending order (newest first)
+            // Sort campaigns by $createdAt in descending order 
             const sortedCampaigns = response.data.documents.sort((a, b) => {
                 return new Date(b.$createdAt) - new Date(a.$createdAt);
             });
@@ -56,6 +56,7 @@ const MainScreen = () => {
                             // Pass additional props if needed
                             createdAt={element.$createdAt}
                             id={element.$id}
+                            moreInfo={element.moreInfo}
                         />
                     ))}
                 </div>

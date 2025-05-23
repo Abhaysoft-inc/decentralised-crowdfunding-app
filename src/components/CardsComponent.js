@@ -2,7 +2,7 @@
 import { useRouter } from 'next/navigation'
 import React from 'react'
 
-const CardsComponent = ({ image, campaignTitle, campaignGoal, id }) => {
+const CardsComponent = ({ image, campaignTitle, campaignGoal, id, moreInfo }) => {
     const router = useRouter()
 
     function viewCampaign() {
@@ -27,7 +27,7 @@ const CardsComponent = ({ image, campaignTitle, campaignGoal, id }) => {
                     {/* Description with fixed height and overflow hidden */}
                     <div className="h-10 overflow-hidden mx-1">
                         <p className="text-[11px]">
-                            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Rem, laudantium.
+                            {moreInfo.slice(1, 88) + ' ......'}
                         </p>
                     </div>
 
