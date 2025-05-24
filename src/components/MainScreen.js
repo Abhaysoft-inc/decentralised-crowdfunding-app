@@ -7,6 +7,7 @@ const MainScreen = () => {
     const [loading, setLoading] = useState(true)
 
     async function getCampaigns() {
+
         try {
             setLoading(true)
             const response = await axios({
@@ -19,7 +20,7 @@ const MainScreen = () => {
                 },
             });
 
-            // Sort campaigns by $createdAt in descending order 
+            // Sort campaigns in descending order 
             const sortedCampaigns = response.data.documents.sort((a, b) => {
                 return new Date(b.$createdAt) - new Date(a.$createdAt);
             });
@@ -33,9 +34,17 @@ const MainScreen = () => {
         }
     }
 
+    const filterByCategory = () => {
+        const filteredCampaigns = campaigns.startsWith('education');
+        console.log(filteredCampaigns);
+    }
+
     useEffect(() => {
         getCampaigns();
+
     }, [])
+
+
 
     return (
         <>
@@ -46,7 +55,7 @@ const MainScreen = () => {
             ) : campaigns.length === 0 ? (
                 <div className="text-center py-10 text-gray-500">No campaigns found</div>
             ) : (
-                <div className="grid grid-cols-3 py-3 gap-3 mx-2">
+                <div className="md:grid block grid-cols-3 py-3 gap-3 mx-2 space-y-5 lg:space-y-0">
                     {campaigns.map((element, index) => (
                         <CardsComponent
                             key={element.$id}

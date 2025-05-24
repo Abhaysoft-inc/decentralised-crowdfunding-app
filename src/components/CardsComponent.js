@@ -11,7 +11,7 @@ const CardsComponent = ({ image, campaignTitle, campaignGoal, id, moreInfo }) =>
 
     return (
         <div className="h-full">
-            <div className="bg-gray-100 rounded shadow-lg shadow-black px-2 py-2 flex flex-col h-full">
+            <div className="bg-gray-100 rounded lg:shadow-lg shadow-md shadow-black px-2 py-2 flex flex-col h-full">
                 {/* Fixed height for image section */}
                 <div className="h-52 overflow-hidden">
                     <img src={image} className='h-full w-full object-cover' alt="" />
@@ -27,7 +27,7 @@ const CardsComponent = ({ image, campaignTitle, campaignGoal, id, moreInfo }) =>
                     {/* Description with fixed height and overflow hidden */}
                     <div className="h-10 overflow-hidden mx-1">
                         <p className="text-[11px]">
-                            {moreInfo.slice(1, 88) + ' ......'}
+                            {moreInfo}
                         </p>
                     </div>
 

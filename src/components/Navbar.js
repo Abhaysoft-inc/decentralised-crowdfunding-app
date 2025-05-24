@@ -2,6 +2,7 @@
 import { ethers } from 'ethers';
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
+import { IoMdMenu } from 'react-icons/io';
 
 const Navbar = () => {
     const router = useRouter()
@@ -56,11 +57,14 @@ const Navbar = () => {
     }
 
 
+
+
     return (
         <>
             <div className="navbar h-20 w-full shadow rounded-full bg-white flex justify-between items-center px-10">
                 <p className="title text-xl sansation-regular cursor-pointer" onClick={goToHome}>DeCrowFund</p>
-                <ul className="menu flex gap-4 text-md items-center">
+                <IoMdMenu className='lg:hidden ' size={28} />
+                <ul className="menu lg:flex gap-4 text-md items-center hidden ">
                     <li className='cursor-pointer hover:text-blue-950 hover:ease-in-out' onClick={goToHome}>Contribute</li>
                     <li className='cursor-pointer hover:text-blue-950 hover:ease-in-out' onClick={goToAbout}>About</li>
                     <li className='cursor-pointer hover:text-blue-950 hover:ease-in-out' onClick={goToStories}>Success Stories</li>

@@ -15,7 +15,6 @@ const CreateCampaignPage = () => {
     // 0x7d2bDd9291475C2634cc4d16F316FA45F858986d
     // 0x4Ba6aEAa4CAC4372542aE21E23F98571cD9BA8B4
     const contractAddress = "0x7d2bDd9291475C2634cc4d16F316FA45F858986d";
-    const appwrite_api_endpoint = "https://fra.cloud.appwrite.io/v1";
 
 
     const [File, setFile] = useState("");
